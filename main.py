@@ -81,7 +81,7 @@ if __name__ == "__main__":
     arguments = get_arguments(('-s', "--server", "server", "Target SMTP Server"),
                               ('-p', "--port", "port", f"Port of Target SMTP Server (Default={port})"),
                               ('-u', "--users", "users", "Target Users (seperated by ',') or File containing List of Users"),
-                              ('-p', "--password", "password", "Passwords (seperated by ',') or File containing List of Passwords"),
+                              ('-P', "--password", "password", "Passwords (seperated by ',') or File containing List of Passwords"),
                               ('-c', "--credentials", "credentials", "Name of File containing Credentials in format ({user}:{password})"),
                               ('-w', "--write", "write", "CSV File to Dump Successful Logins (default=current data and time)"))
     if not arguments.server:
