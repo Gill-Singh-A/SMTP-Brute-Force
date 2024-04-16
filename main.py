@@ -61,10 +61,10 @@ def brute_force(thread_index, mail_server, port, credentials):
     return successful_logins
 def main(server, port, credentials):
     successful_logins = {}
-    display('+', f"Starting {Back.MAGENTA}{thread_count} Brute Force Threads{Back.RESET}")
-    display(':', f"Credentials / Threads = {Back.MAGENTA}{len(credentials)//thread_count}{Back.RESET}")
     thread_count = cpu_count()
     pool = Pool(thread_count)
+    display('+', f"Starting {Back.MAGENTA}{thread_count} Brute Force Threads{Back.RESET}")
+    display(':', f"Credentials / Threads = {Back.MAGENTA}{len(credentials)//thread_count}{Back.RESET}")
     threads = []
     credentials_count = len(credentials)
     credential_groups = [credentials[group*credentials_count//thread_count: (group+1)*credentials_count//thread_count] for group in range(thread_count)]
