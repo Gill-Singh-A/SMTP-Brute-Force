@@ -100,11 +100,11 @@ if __name__ == "__main__":
                 with open(arguments.users, 'r') as file:
                     arguments.users = [user for user in file.read().split('\n') if user != '']
             except FileNotFoundError:
-                arguments.user = arguments.user.split(',')
+                arguments.users = arguments.users.split(',')
             except:
                 display('-', f"Error while Reading File {Back.YELLOW}{arguments.users}{Back.RESET}")
                 exit(0)
-            display(':', f"Users Loaded = {Back.MAGENTA}{len(arguments.user)}{Back.RESET}")
+            display(':', f"Users Loaded = {Back.MAGENTA}{len(arguments.users)}{Back.RESET}")
         if not arguments.password:
             display('-', f"Please specify {Back.YELLOW}Passwords{Back.RESET}")
             exit(0)
@@ -119,7 +119,7 @@ if __name__ == "__main__":
                 exit(0)
             display(':', f"Passwords Loaded = {Back.MAGENTA}{len(arguments.password)}{Back.RESET}")
         arguments.credentials = []
-        for user in arguments.user:
+        for user in arguments.users:
             for password in arguments.password:
                 arguments.credentials.append([user, password])
     else:
